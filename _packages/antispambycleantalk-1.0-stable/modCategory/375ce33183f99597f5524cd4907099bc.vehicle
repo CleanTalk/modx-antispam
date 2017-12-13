@@ -1,0 +1,60 @@
+<?php return array (
+  'unique_key' => 'category',
+  'preserve_keys' => false,
+  'update_object' => true,
+  'related_objects' => 
+  array (
+    'Chunks' => 
+    array (
+      '8ff35f61df540863a749a3f815b09690' => 
+      array (
+        'preserve_keys' => false,
+        'update_object' => false,
+        'unique_key' => 'name',
+        'class' => 'modChunk',
+        'object' => '{"id":1,"source":0,"property_preprocess":0,"name":"cleantalkFormParams","description":"Additional parameters. Sending this parameters will improve filtration.","editor_type":0,"category":0,"cache_type":0,"snippet":"<input type=\\"hidden\\" name=\\"ct_checkjs\\" id=\\"ct_checkjs\\" value=\\"0\\" \\/>\\n<script type=\\"text\\/javascript\\">\\nvar date = new Date();\\ndocument.getElementById(\\"ct_checkjs\\").value = date.getFullYear(); \\ndocument.cookie = \\"ct_timestamp\\" + \\"=\\" + encodeURIComponent(Math.floor(new Date().getTime()\\/1000)) + \\"; path=\\/\\";\\n<\\/script>","locked":0,"properties":null,"static":0,"static_file":"","content":"<input type=\\"hidden\\" name=\\"ct_checkjs\\" id=\\"ct_checkjs\\" value=\\"0\\" \\/>\\n<script type=\\"text\\/javascript\\">\\nvar date = new Date();\\ndocument.getElementById(\\"ct_checkjs\\").value = date.getFullYear(); \\ndocument.cookie = \\"ct_timestamp\\" + \\"=\\" + encodeURIComponent(Math.floor(new Date().getTime()\\/1000)) + \\"; path=\\/\\";\\n<\\/script>"}',
+        'guid' => 'ed4461a5a5e204a7cb180627050e462e',
+        'native_key' => 1,
+        'signature' => 'bfcd64c5ee52b40065a7a674ad9c4593',
+      ),
+    ),
+  ),
+  'related_object_attributes' => 
+  array (
+    'Chunks' => 
+    array (
+      'preserve_keys' => false,
+      'update_object' => false,
+      'unique_key' => 'name',
+    ),
+    'Snippets' => 
+    array (
+      'preserve_keys' => false,
+      'update_object' => true,
+      'unique_key' => 'name',
+    ),
+  ),
+  'namespace' => 'antispambycleantalk',
+  'resolve' => 
+  array (
+    0 => 
+    array (
+      'type' => 'file',
+      'body' => '{"source":"antispambycleantalk-1.0-stable\\/modCategory\\/375ce33183f99597f5524cd4907099bc\\/0\\/","target":"return MODX_CORE_PATH . \'components\\/\';","name":"antispambycleantalk"}',
+    ),
+    1 => 
+    array (
+      'type' => 'file',
+      'body' => '{"source":"antispambycleantalk-1.0-stable\\/modCategory\\/375ce33183f99597f5524cd4907099bc\\/1\\/","target":"return MODX_ASSETS_PATH . \'components\\/\';","name":"antispambycleantalk"}',
+    ),
+  ),
+  'validate' => NULL,
+  'vehicle_package' => 'transport',
+  'vehicle_class' => 'xPDOObjectVehicle',
+  'guid' => '9bd99be01b3d285ee4ffdd2900277426',
+  'package' => 'modx',
+  'class' => 'modCategory',
+  'signature' => '375ce33183f99597f5524cd4907099bc',
+  'native_key' => 1,
+  'object' => '{"id":1,"parent":0,"category":"antispambycleantalk","rank":0}',
+);

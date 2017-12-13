@@ -1,0 +1,16 @@
+<?php return array (
+  'unique_key' => 'key',
+  'preserve_keys' => true,
+  'update_object' => false,
+  'namespace' => 'antispambycleantalk',
+  'resolve' => NULL,
+  'validate' => NULL,
+  'vehicle_package' => 'transport',
+  'vehicle_class' => 'xPDOObjectVehicle',
+  'guid' => 'b330d3ac7cd1052829072a78ba9e3c3e',
+  'package' => 'modx',
+  'class' => 'modSystemSetting',
+  'signature' => 'b85af399fc84cdcfa47b982a61d3c228',
+  'native_key' => 'antispambycleantalk.api_key',
+  'object' => '{"key":"antispambycleantalk.api_key","value":"","xtype":"textfield","namespace":"antispambycleantalk","area":"antispambycleantalk","editedon":null}',
+);
