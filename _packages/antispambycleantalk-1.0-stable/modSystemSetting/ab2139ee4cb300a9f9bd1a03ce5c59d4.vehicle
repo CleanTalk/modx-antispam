@@ -7,10 +7,10 @@
   'validate' => NULL,
   'vehicle_package' => 'transport',
   'vehicle_class' => 'xPDOObjectVehicle',
-  'guid' => 'b330d3ac7cd1052829072a78ba9e3c3e',
+  'guid' => 'ef6d42e8f06d8dab58ec05a24f2a7e02',
   'package' => 'modx',
   'class' => 'modSystemSetting',
-  'signature' => 'b85af399fc84cdcfa47b982a61d3c228',
+  'signature' => 'ab2139ee4cb300a9f9bd1a03ce5c59d4',
   'native_key' => 'antispambycleantalk.api_key',
   'object' => '{"key":"antispambycleantalk.api_key","value":"","xtype":"textfield","namespace":"antispambycleantalk","area":"antispambycleantalk","editedon":null}',
 );

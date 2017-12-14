@@ -9,10 +9,10 @@
   'validate' => NULL,
   'vehicle_package' => 'transport',
   'vehicle_class' => 'xPDOObjectVehicle',
-  'guid' => '64132d6be3dcf1dd8398248493ceaecd',
+  'guid' => '85f77d868762d323bf77ea5c63ce3300',
   'package' => 'modx',
   'class' => 'modNamespace',
-  'signature' => '3e91a66c94f0764ae4b204919b66635c',
+  'signature' => 'b5c8da75d014ae33b7ba703a587454fd',
   'native_key' => 'antispambycleantalk',
   'object' => '{"name":"antispambycleantalk","path":"{core_path}components\\/antispambycleantalk\\/","assets_path":""}',
 );
