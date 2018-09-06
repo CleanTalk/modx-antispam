@@ -5,28 +5,17 @@ if ($e->name == 'OnLoadWebDocument')
 	$plugin_enabled = $modx->getOption('antispambycleantalk.plugin_enabled');
 	if ($plugin_enabled)
 	{
+		set_cookies();
 		$ct_temp_msg_data = getFieldsAny($_POST);
-		if (isset($ct_temp_msg_data['email']) && (isset($ct_temp_msg_data['nickname']) || isset($ct_temp_msg_data['message'])))
+		if (isset($ct_temp_msg_data['email']) || isset($ct_temp_msg_data['message']))
 		{
 			$api_key = $modx->getOption('antispambycleantalk.api_key');
 			$sender_email    = ($ct_temp_msg_data['email']    ? $ct_temp_msg_data['email']    : '');
 			$sender_nickname = ($ct_temp_msg_data['nickname'] ? $ct_temp_msg_data['nickname'] : '');
-			$sender_message_post  = ($ct_temp_msg_data['message']  ? $ct_temp_msg_data['message']  : array());
-			$sender_message == null;
-			foreach ($sender_message_post as $key=>$value)
-			{
-				if ($key == 'message'   ||
-					$key == 'contact'   ||
-					$key == 'msg'       ||
-					$key == 'contactus' ||
-					$key == 'contact_us'
-				)
-					$sender_message = $value;
-			}
-			$check_type = null;
-			if ($sender_message !== null)
-			    $check_type = 'check_message';
-			else $check_type = 'check_newuser';
+			$sender_message_post  = ($ct_temp_msg_data['message']  ? $ct_temp_msg_data['meessage']  : '');
+			if (is_array($sender_message_post))
+				$sender_message_post = implode("\n", $sender_message_post);
+
 			$path = $modx->getOption('antispambycleantalk.core_path', null, $modx->getOption('core_path') . 'components/antispambycleantalk/model/');
 			if (is_readable($path . 'cleantalk.class.php') && is_readable($path . 'cleantalkhelper.class.php') && is_readable($path . 'cleantalkrequest.class.php') && is_readable($path . 'cleantalkresponse.class.php')) {
 			    $cleantalk = $modx->getService('antispambycleantalk','Cleantalk', $path);
@@ -36,40 +25,38 @@ if ($e->name == 'OnLoadWebDocument')
 			}
 			
 			/* Content check */
-			$refferrer = null;
-			if (isset($_SERVER['HTTP_REFERER'])) {
-			    $refferrer = htmlspecialchars((string) $_SERVER['HTTP_REFERER']);
-			}
 
-			$user_agent = null;
-			if (isset($_SERVER['HTTP_USER_AGENT'])) {
-			    $user_agent = htmlspecialchars((string) $_SERVER['HTTP_USER_AGENT']);
-			}
-			$sender_info = array(
-			    'REFFERRER' => $refferrer,
-			    'post_url' => $refferrer,
-			    'USER_AGENT' => $user_agent
-			);
-			$js_on = 0;
-			if (isset($_POST['ct_checkjs']) && $_POST['ct_checkjs'] == date("Y"))
-			        $js_on = 1;
-			$cookie_timestamp = (isset($_COOKIE['ct_timestamp']) ? $_COOKIE['ct_timestamp'] : 0);
-			$sender_info = json_encode($sender_info);   
+			$page_set_timestamp = (isset($_COOKIE['ct_ps_timestamp']) ? $_COOKIE['ct_ps_timestamp'] : 0);
+			$js_timezone = (isset($_COOKIE['ct_timezone']) ? $_COOKIE['ct_timezone'] : '');
+			$first_key_timestamp = (isset($_COOKIE['ct_fkp_timestamp']) ? $_COOKIE['ct_fkp_timestamp'] : '');
+			$pointer_data = (isset($_COOKIE['ct_pointer_data']) ? json_decode($_COOKIE['ct_pointer_data']) : '');
+  
 			$cleantalk_request->auth_key = trim($api_key);
 			$cleantalk_request->sender_email = $sender_email;
 			$cleantalk_request->sender_nickname = $sender_nickname;
-			$cleantalk_request->sender_ip = $cleantalk->cleantalk_get_real_ip();
-			$cleantalk_request->agent = 'modx-10';
-			$cleantalk_request->js_on = $js_on;
-			$cleantalk_request->submit_time = time() - $cookie_timestamp;
-			$cleantalk_request->sender_info = $sender_info;
+		    $ct_request->sender_ip = CleantalkHelper::ip_get(array('real'), false);
+		    $ct_request->x_forwarded_for = CleantalkHelper::ip_get(array('x_forwarded_for'), false);
+		    $ct_request->x_real_ip       = CleantalkHelper::ip_get(array('x_real_ip'), false);
+			$cleantalk_request->agent = 'modx-11';
+			$cleantalk_request->js_on = isset($_POST['ct_checkjs']) && $_POST['ct_checkjs'] == date("Y") ? 1 : 0;
+			$cleantalk_request->submit_time = time() - intval($page_set_timestamp);
+			$cleantalk_request->message = $sender_message_post;
+		    $ct_request->sender_info = json_encode(array(
+		        'page_url' => htmlspecialchars(@$_SERVER['SERVER_NAME'].@$_SERVER['REQUEST_URI']),
+		        'REFFERRER' => $_SERVER['HTTP_REFERER'],
+		        'USER_AGENT' => $_SERVER['HTTP_USER_AGENT'],
+		        'REFFERRER_PREVIOUS' => isset($_COOKIE['ct_prev_referer'])?$_COOKIE['ct_prev_referer']:0,     
+		        'cookies_enabled' => test_cookies(), 
+		        'js_timezone' => $js_timezone,
+		        'mouse_cursor_positions' => $pointer_data,
+		        'key_press_timestamp' => $first_key_timestamp,
+		        'page_set_timestamp' => $page_set_timestamp,          
+		    ));
+
 			$cleantalk->work_url = 'http://moderate.cleantalk.org';
 			$cleantalk->server_url = 'http://moderate.cleantalk.org';
-			if ($check_type == 'check_message'){
-			    $cleantalk_request->message = $sender_message;
-			    $ct_result = $cleantalk->isAllowMessage($cleantalk_request);   
-			}
-			else $ct_result = $cleantalk->isAllowUser($cleantalk_request); 
+
+			$ct_result = $cleantalk->isAllowMessage($cleantalk_request);   
 			if($ct_result->errno == 0 && $ct_result->allow == 0)
 			{
 			  	$error_tpl=file_get_contents($path."/error.html");
@@ -81,6 +68,48 @@ if ($e->name == 'OnLoadWebDocument')
 
 }
 
+function test_cookies()
+{
+
+    if(isset($_COOKIE['ct_cookies_test'])){
+        
+        $cookie_test = json_decode(stripslashes($_COOKIE['ct_cookies_test']), true);
+        
+        $check_srting = trim($modx->getOption('antispambycleantalk.api_key'));
+        foreach($cookie_test['cookies_names'] as $cookie_name){
+            $check_srting .= isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : '';
+        } unset($cokie_name);
+        
+        if($cookie_test['check_value'] == md5($check_srting)){
+            return 1;
+        }else{
+            return 0;
+        }
+    }else{
+        return null;
+    }    
+}
+
+function set_cookies()
+{
+
+    // Cookie names to validate
+    $cookie_test_value = array(
+        'cookies_names' => array(),
+        'check_value' => trim($modx->getOption('antispambycleantalk.api_key')),
+    );
+
+    // Pervious referer
+    if(!empty($_SERVER['HTTP_REFERER'])){
+        setcookie('ct_prev_referer', $_SERVER['HTTP_REFERER'], 0, '/');
+        $cookie_test_value['cookies_names'][] = 'ct_prev_referer';
+        $cookie_test_value['check_value'] .= $_SERVER['HTTP_REFERER'];
+    }
+    
+    // Cookies test
+    $cookie_test_value['check_value'] = md5($cookie_test_value['check_value']);
+    setcookie('ct_cookies_test', json_encode($cookie_test_value), 0, '/');    
+}
 
 /*
 * Get data from submit recursively

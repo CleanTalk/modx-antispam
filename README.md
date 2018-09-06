@@ -1,6 +1,6 @@
 modx-antispam
 ================
-Version 1.0
+Version 1.1
 ================
 
 Strongly recommended to pass additional parameters. To do this, add a cleantalk chunk inside a form that needs to be protected.
