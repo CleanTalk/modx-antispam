@@ -2,6 +2,7 @@ Version 1.1 September 06, 2018
 ------------------------------
 - Update lib classes
 - Improve spam protection
+- Create snippet
 - Bug fixes and other minor improvements
 
 Version 1.0 December 14, 2017
