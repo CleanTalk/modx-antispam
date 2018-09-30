@@ -1,5 +1,7 @@
 modx-antispam
 ================
+[![Build Status](https://travis-ci.org/CleanTalk/modx-antispam.svg)](https://travis-ci.org/CleanTalk/modx-antispam)
+
 Version 1.1
 ================
 
