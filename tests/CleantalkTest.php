@@ -1,9 +1,5 @@
 <?php
 require_once 'core/components/antispambycleantalk/model/cleantalk.class.php';
-require_once 'core/components/antispambycleantalk/model/cleantalkrequest.class.php';
-require_once 'core/components/antispambycleantalk/model/cleantalkresponse.class.php';
-require_once 'core/components/antispambycleantalk/model/cleantalkhelper.class.php';
-require_once 'core/components/antispambycleantalk/model/cleantalk-php-patch.php';
 
 class CleantalkTest extends \PHPUnit\Framework\TestCase 
 {
