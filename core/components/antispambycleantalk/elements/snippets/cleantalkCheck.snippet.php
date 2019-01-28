@@ -1,4 +1,4 @@
-<?
+<?php
 $plugin_enabled = $modx->getOption('antispambycleantalk.plugin_enabled');
 $api_key = trim($modx->getOption('antispambycleantalk.api_key'));
 $check_type = trim($modx->getOption('cleantalkCheckType', $scriptProperties, ''));
@@ -30,7 +30,24 @@ if ($plugin_enabled && $api_key != '' && ($check_type == 'register' || $check_ty
 		$js_timezone = (isset($_COOKIE['ct_timezone']) ? $_COOKIE['ct_timezone'] : '');
 		$first_key_timestamp = (isset($_COOKIE['ct_fkp_timestamp']) ? $_COOKIE['ct_fkp_timestamp'] : '');
 		$pointer_data = (isset($_COOKIE['ct_pointer_data']) ? json_decode($_COOKIE['ct_pointer_data']) : '');
-		
+		$ct_cookies_test = null;
+	    if(isset($_COOKIE['ct_cookies_test'])){
+	        
+	        $cookie_test = json_decode(stripslashes($_COOKIE['ct_cookies_test']), true);
+	        
+	        $check_srting = $api_key;
+	        foreach($cookie_test['cookies_names'] as $cookie_name){
+	            $check_srting .= isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : '';
+	        } unset($cokie_name);
+	        
+	        if($cookie_test['check_value'] == md5($check_srting)){
+	            $ct_cookies_test = 1;
+	        }else{
+	            $ct_cookies_test = 0;
+	        }
+	    }else{
+	        $ct_cookies_test = null;
+	    }		
 	    $cleantalk_request = new CleantalkRequest();
 		$cleantalk_request->auth_key = $api_key;
 		$cleantalk_request->sender_email = $sender_email;
@@ -40,7 +57,7 @@ if ($plugin_enabled && $api_key != '' && ($check_type == 'register' || $check_ty
 	    $cleantalk_request->x_real_ip       = CleantalkHelper::ip_get(array('x_real_ip'), false);
 		$cleantalk_request->agent = 'modx-11';
 		$cleantalk_request->js_on = isset($_POST['ct_checkjs']) && $_POST['ct_checkjs'] == date("Y") ? 1 : 0;
-		$cleantalk_request->submit_time = _cleantalk_get_submit_time();
+		$cleantalk_request->submit_time = ($ct_cookies_test == 1) ? time() - (int)$_COOKIE['ct_timestamp'] : null;
 		if ($check_type == 'message')
 			$cleantalk_request->message = $sender_message_post;
 
@@ -54,8 +71,9 @@ if ($plugin_enabled && $api_key != '' && ($check_type == 'register' || $check_ty
 	        'page_set_timestamp' => $page_set_timestamp, 
 	        'fields_number' => sizeof($_POST),  
 			'REFFERRER_PREVIOUS' => isset($_COOKIE['ct_prev_referer']) ? $_COOKIE['ct_prev_referer'] : null,
-			'cookies_enabled' => _cleantalk_apbct_cookies_test(),	               
+			'cookies_enabled' => $ct_cookies_test,	               
 	    ));
+	    $cleantalk_request->post_info = json_encode(array('post_url' => isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '', 'comment_type' => $check_type));
 		$cleantalk = new Cleantalk();
 		$cleantalk->work_url = 'http://moderate.cleantalk.org';
 		$cleantalk->server_url = 'http://moderate.cleantalk.org';
@@ -276,30 +294,4 @@ function _cleantalk_obfuscate_param($value = null)
 	}
 
 	return $value;
-}
-
-function _cleantalk_get_submit_time()
-{
-  return _cleantalk_apbct_cookies_test() == 1 ? time() - (int)$_COOKIE['ct_timestamp'] : null;
-}
-
-function _cleantalk_apbct_cookies_test()
-{   
-    if(isset($_COOKIE['ct_cookies_test'])){
-        
-        $cookie_test = json_decode(stripslashes($_COOKIE['ct_cookies_test']), true);
-        
-        $check_srting = trim($modx->getOption('antispambycleantalk.api_key'));
-        foreach($cookie_test['cookies_names'] as $cookie_name){
-            $check_srting .= isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : '';
-        } unset($cokie_name);
-        
-        if($cookie_test['check_value'] == md5($check_srting)){
-            return 1;
-        }else{
-            return 0;
-        }
-    }else{
-        return null;
-    }
 }
