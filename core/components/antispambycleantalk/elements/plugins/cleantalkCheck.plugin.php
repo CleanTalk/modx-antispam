@@ -117,6 +117,8 @@ if ($plugin_enabled && $api_key != '')
 
 }
 
+if (!function_exists("_cleantalk_get_fields_any"))
+{
 function _cleantalk_get_fields_any($arr, $message=array(), $email = null, $nickname = array('nick' => '', 'first' => '', 'last' => ''), $subject = null, $contact = true, $prev_name = '')
   {
     //Skip request if fields exists
@@ -307,8 +309,11 @@ function _cleantalk_get_fields_any($arr, $message=array(), $email = null, $nickn
     );  
     return $return_param;
 
-  }
+}
+}
 
+if (!function_exists("_cleantalk_obfuscate_param"))
+{
 function _cleantalk_obfuscate_param($value = null) 
 {
   if ($value && (!is_object($value) || !is_array($value))) {
@@ -317,4 +322,5 @@ function _cleantalk_obfuscate_param($value = null)
   }
 
   return $value;
+}  
 }
