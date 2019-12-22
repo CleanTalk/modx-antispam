@@ -23,7 +23,7 @@ if (!defined('MOREPROVIDER_BUILD')) {
     /* define version */
     define('PKG_NAME','antispambycleantalk');
     define('PKG_NAME_LOWER',strtolower(PKG_NAME));
-    define('PKG_VERSION','1.1');
+    define('PKG_VERSION','1.2');
     define('PKG_RELEASE','stable');
 
     /* load modx */
@@ -136,7 +136,7 @@ $attr = array(
     xPDOTransport::RELATED_OBJECT_ATTRIBUTES => array (
         'Chunks' => array(
             xPDOTransport::PRESERVE_KEYS => false,
-            xPDOTransport::UPDATE_OBJECT => false,
+            xPDOTransport::UPDATE_OBJECT => true,
             xPDOTransport::UNIQUE_KEY => 'name',
         ),
         'Snippets' => array(

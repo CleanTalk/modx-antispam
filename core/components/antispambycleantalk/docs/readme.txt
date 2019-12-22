@@ -1,11 +1,10 @@
 ----------------------
 Antispam by CleanTalk
 ----------------------
-Version: 1.1
+Version: 1.2
 Author: Cleantalk.inc
 Contact: welcome@cleantalk.org
 ----------------------
-Strongly recommended to pass additional parameters. To do this, add a cleantalk chunk inside a form that needs to be protected.
 
 In case if protection is not working on your contact form, go to cleantalkCheck plugin code and add your field to the $sender_message condition.
 

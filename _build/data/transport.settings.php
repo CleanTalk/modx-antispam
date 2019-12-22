@@ -3,6 +3,7 @@
 $s = array(
     'antispambycleantalk.api_key' => '',
     'antispambycleantalk.plugin_enabled' => true,
+    'antispambycleantalk.exclusions_url' => '',
 );
 
 $settings = array();
