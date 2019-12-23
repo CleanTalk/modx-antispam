@@ -9,11 +9,19 @@ $plugins[0]->set('name','cleantalkCheck');
 $plugins[0]->set('description','Addition cleantalkCheck params.');
 $plugins[0]->set('plugincode', getSnippetContent($sources['plugins'] . 'cleantalkCheck.plugin.php'));
 $events = array();
+// Event to handle CCF
 $events['OnLoadWebDocument']= $modx->newObject('modPluginEvent');
 $events['OnLoadWebDocument']->fromArray(array(
 	'event' => 'OnLoadWebDocument',
 	'priority' => 0,
 	'propertyset' => 0,
+),'',true,true);
+// Event to handle AJAX requests
+$events['OnMODXInit']= $modx->newObject('modPluginEvent');
+$events['OnMODXInit']->fromArray(array(
+    'event' => 'OnMODXInit',
+    'priority' => 0,
+    'propertyset' => 0,
 ),'',true,true);
 if (is_array($events) && !empty($events)) {
 	$plugins[0]->addMany($events);

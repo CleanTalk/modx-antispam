@@ -25,6 +25,18 @@ switch ($modx->event->name) {
 
         break;
 
+    case 'OnMODXInit' :
+
+        // Handle AJAX requests only
+        if ( empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) || $_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest' ) { return; }
+
+        // Fire the anti spam checking
+        if( ! empty( $_POST ) ){
+            $cleantalk_antispam_core->ccf_spam_test($_POST);
+        }
+
+        break;
+
 }
 
 return;

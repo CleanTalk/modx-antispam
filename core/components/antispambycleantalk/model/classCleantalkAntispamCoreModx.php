@@ -15,6 +15,7 @@ class classCleantalkAntispamCoreModx extends classCleantalkAntispamCore
 
     public function ccf_spam_test( $post )
     {
+        global $modx;
         // Patch for old PHP versions
         require_once MODX_CORE_PATH . 'components/antispambycleantalk/model/lib/ct_phpFix.php';
 
@@ -81,9 +82,15 @@ class classCleantalkAntispamCoreModx extends classCleantalkAntispamCore
             }elseif($ct_result->allow == 1){
 
             }else{
-                $error_tpl = file_get_contents(MODX_CORE_PATH . 'components/antispambycleantalk/model/lib/die_page.html');
-                print str_replace(array('{BLOCK_REASON}','{GENERATED}'), array($ct_result->comment, "<p>The page was generated at&nbsp;".date("D, d M Y H:i:s")."</p>"), $error_tpl);
-                die();
+                if( isset( $post['af_action'] ) ) {
+                    // Ajax Form's format returning
+                    $modx->placeholders['fi.error.' . key($post)] = $ct_result->comment;
+                    return;
+                } else {
+                    $error_tpl = file_get_contents(MODX_CORE_PATH . 'components/antispambycleantalk/model/lib/die_page.html');
+                    print str_replace(array('{BLOCK_REASON}','{GENERATED}'), array($ct_result->comment, "<p>The page was generated at&nbsp;".date("D, d M Y H:i:s")."</p>"), $error_tpl);
+                    die();
+                }
             }
         }
 
