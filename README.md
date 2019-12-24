@@ -2,12 +2,8 @@ modx-antispam
 ================
 [![Build Status](https://travis-ci.org/CleanTalk/modx-antispam.svg)](https://travis-ci.org/CleanTalk/modx-antispam)
 
-Version 1.1
+Version 1.2
 ================
-
-Strongly recommended to pass additional parameters. To do this, add a cleantalk chunk inside a form that needs to be protected.
-
-In case if protection is not working on your contact form, go to cleantalkCheck plugin code and add your field to the $sender_message condition.
 
 CleanTalk Released a plugin for the Protection of MODX Against Spam and Spam Bots
 
