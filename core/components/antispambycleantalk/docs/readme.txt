@@ -6,8 +6,6 @@ Author: Cleantalk.inc
 Contact: welcome@cleantalk.org
 ----------------------
 
-In case if protection is not working on your contact form, go to cleantalkCheck plugin code and add your field to the $sender_message condition.
-
 CleanTalk Released a plugin for the Protection of MODX Against Spam and Spam Bots
 
 CleanTalk completed the development extension for the MODX, to protect your online store against spam and spambots.
