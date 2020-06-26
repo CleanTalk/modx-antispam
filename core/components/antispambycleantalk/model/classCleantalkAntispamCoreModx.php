@@ -16,9 +16,7 @@ class classCleantalkAntispamCoreModx extends classCleantalkAntispamCore
     public function ccf_spam_test( $post )
     {
         global $modx;
-        // Patch for old PHP versions
-        require_once MODX_CORE_PATH . 'components/antispambycleantalk/model/lib/ct_phpFix.php';
-
+        
         $msg_data = $this->get_fields_any($post);
 
         // Data
