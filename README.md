@@ -2,7 +2,7 @@ modx-antispam
 ================
 [![Build Status](https://travis-ci.org/CleanTalk/modx-antispam.svg)](https://travis-ci.org/CleanTalk/modx-antispam)
 
-Version 1.2
+Version 1.3
 ================
 
 CleanTalk Released a plugin for the Protection of MODX Against Spam and Spam Bots
