@@ -73,7 +73,11 @@ class classCleantalkAntispamCoreModx extends classCleantalkAntispamCore
             $ct = new \Cleantalk\Antispam\Cleantalk();
             $ct->server_url = 'http://moderate.cleantalk.org';
 
-            $ct_result = $ct->isAllowMessage($ct_request);
+            if( isset( $post['register-btn'] ) ) {
+                $ct_result = $ct->isAllowUser($ct_request);
+            } else {
+                $ct_result = $ct->isAllowMessage($ct_request);
+            }
 
             if(!empty($ct_result->errno) && !empty($ct_result->errstr)){
 
