@@ -87,7 +87,7 @@ class classCleantalkAntispamCoreModx extends classCleantalkAntispamCore
                 if( isset( $post['af_action'] ) ) {
                     // Ajax Form's format returning
                     $modx->placeholders['fi.error.' . key($post)] = $ct_result->comment;
-                    return;
+                    die();
                 } else {
                     $error_tpl = file_get_contents(MODX_CORE_PATH . 'components/antispambycleantalk/model/lib/die_page.html');
                     print str_replace(array('{BLOCK_REASON}','{GENERATED}'), array($ct_result->comment, "<p>The page was generated at&nbsp;".date("D, d M Y H:i:s")."</p>"), $error_tpl);
