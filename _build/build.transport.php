@@ -23,7 +23,7 @@ if (!defined('MOREPROVIDER_BUILD')) {
     /* define version */
     define('PKG_NAME','antispambycleantalk');
     define('PKG_NAME_LOWER',strtolower(PKG_NAME));
-    define('PKG_VERSION','1.3');
+    define('PKG_VERSION','1.4');
     define('PKG_RELEASE','stable');
 
     /* load modx */
