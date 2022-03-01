@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function(){
         ct_input = document.createElement('input');
         ct_input.setAttribute('type', 'hidden');
         ct_input.setAttribute('name', 'ct_checkjs');
-        ct_input.setAttribute('id', 'ct_checkjs');
+        ct_input.setAttribute('class', 'ct_checkjs');
         ct_input.setAttribute('value', d.getFullYear());
 
         ct_form.prepend(ct_input);
@@ -26,7 +26,14 @@ document.addEventListener("DOMContentLoaded", function(){
         document.cookie = c_name + "=" + encodeURIComponent(value) + "; path=/";
     }
 
-    document.getElementById("ct_checkjs").value = d.getFullYear();
+    var apbctCheckJsInputs = document.getElementsByClassName("ct_checkjs");
+    var apbctCheckJsInputsCount = apbctCheckJsInputs.length;
+    if ( apbctCheckJsInputsCount > 0 ) {
+        for ( var j = 0; j < apbctCheckJsInputsCount; j++ ) {
+            apbctCheckJsInputs[j].value = d.getFullYear();
+        }
+    }
+
     ctSetCookie("ct_ps_timestamp", Math.floor(new Date().getTime()/1000));
     ctSetCookie("ct_fkp_timestamp", "0");
     ctSetCookie("ct_pointer_data", "0");
