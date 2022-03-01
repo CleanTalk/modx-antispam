@@ -47,7 +47,7 @@ class classCleantalkAntispamCoreModx extends classCleantalkAntispamCore
 
             // Service pararams
             $ct_request->auth_key             = $this->get_api_key();
-            $ct_request->agent                = 'modx-13';
+            $ct_request->agent                = 'modx-14';
 
             // Message params
             $ct_request->sender_email         = $sender_email;
