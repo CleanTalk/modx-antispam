@@ -4,6 +4,7 @@ $s = array(
     'antispambycleantalk.api_key' => '',
     'antispambycleantalk.plugin_enabled' => true,
     'antispambycleantalk.exclusions_url' => '',
+    'antispambycleantalk.check_forms_without_email' => false
 );
 
 $settings = array();
