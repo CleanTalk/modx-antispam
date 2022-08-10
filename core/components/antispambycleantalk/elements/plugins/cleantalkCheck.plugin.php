@@ -5,9 +5,12 @@ if( $modx->getOption('antispambycleantalk.plugin_enabled') && trim( $modx->getOp
     return;
 
 } else {
-
-    require_once MODX_CORE_PATH . 'components/antispambycleantalk/model/classCleantalkAntispamCoreModx.php';
-    $cleantalk_antispam_core = new classCleantalkAntispamCoreModx( trim( $modx->getOption( 'antispambycleantalk.api_key' ) ) );
+    
+    $path = MODX_CORE_PATH . 'components/antispambycleantalk/model/';
+    $modx->getService('cleantalk_antispam_core', 'classCleantalkAntispamCoreModx', $path, [
+        'api_key' => trim( $modx->getOption( 'antispambycleantalk.api_key' ) )
+    ]);    
+    $cleantalk_antispam_core = $modx->cleantalk_antispam_core;
 
 }
 
@@ -38,6 +41,4 @@ switch ($modx->event->name) {
         break;
 
 }
-
-return;
 
