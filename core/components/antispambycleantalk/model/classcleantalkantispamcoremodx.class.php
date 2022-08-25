@@ -35,10 +35,10 @@ class classCleantalkAntispamCoreModx extends classCleantalkAntispamCore
         // Skip check if
         if(
             $skip || // Skip flag set by get_fields_any()
-            ( ! $sender_email && ! $modx->getOption('antispambycleantalk.check_forms_without_email')) || // No email detected and general post data test is disabled
+            ( ! $sender_email && ! $this->modx->getOption('antispambycleantalk.check_forms_without_email')) || // No email detected and general post data test is disabled
             ( $this->post_exclusions_check( $post ) ) || // Has an exclusions in POST
             ( $this->url_exclusions_check() ) ||
-            $modx->user->hasSessionContext('mgr')
+            $this->modx->user->hasSessionContext('mgr')
         ) {
             $skip = true;
         }
