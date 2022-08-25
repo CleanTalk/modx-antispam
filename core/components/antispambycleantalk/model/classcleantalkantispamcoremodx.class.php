@@ -9,7 +9,7 @@ class classCleantalkAntispamCoreModx extends classCleantalkAntispamCore
      */
     public $modx = null;
 
-    public function __construct(modX &$modx, array $config = [])
+    public function __construct(modX $modx, array $config = [])
     {
         $this->modx = $modx;
         parent::__construct($config['api_key']);
@@ -172,5 +172,4 @@ class classCleantalkAntispamCoreModx extends classCleantalkAntispamCore
 
         );
     }
-
 }
