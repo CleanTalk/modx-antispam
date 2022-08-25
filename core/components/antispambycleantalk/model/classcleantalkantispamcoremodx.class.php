@@ -4,18 +4,21 @@ require_once MODX_CORE_PATH . 'components/antispambycleantalk/model/lib/classCle
 
 class classCleantalkAntispamCoreModx extends classCleantalkAntispamCore
 {
+    /**
+     * @var modX|null $modx
+     */
+    public $modx = null;
 
-    public function __construct( $api_key )
+    public function __construct(modX $modx, array $config = [])
     {
-        global $modx;
-        parent::__construct ($api_key );
+        $this->modx = $modx;
+        parent::__construct($config['api_key']);
         require_once MODX_CORE_PATH . 'components/antispambycleantalk/model/lib/autoloader.php';
-        $modx->regClientScript(MODX_ASSETS_URL . 'components/antispambycleantalk/js/web/apbct_public.js');
+        $this->modx->regClientScript(MODX_ASSETS_URL . 'components/antispambycleantalk/js/web/apbct_public.js');
     }
 
     public function ccf_spam_test( $post )
     {
-        global $modx;
         
         $msg_data = $this->get_fields_any($post);
 
@@ -86,7 +89,7 @@ class classCleantalkAntispamCoreModx extends classCleantalkAntispamCore
             }else{
                 if( isset( $post['af_action'] ) ) {
                     // Ajax Form's format returning
-                    $modx->placeholders['fi.error.' . key($post)] = $ct_result->comment;
+                    $this->modx->placeholders['fi.error.' . key($post)] = $ct_result->comment;
                     return;
                 } else {
                     $error_tpl = file_get_contents(MODX_CORE_PATH . 'components/antispambycleantalk/model/lib/die_page.html');
@@ -118,11 +121,10 @@ class classCleantalkAntispamCoreModx extends classCleantalkAntispamCore
 
     protected function url_exclusions_check() {
 
-        global $modx;
 
-        if ( $modx->getOption('antispambycleantalk.exclusions_url') !== '' ) {
+        if ( $this->modx->getOption('antispambycleantalk.exclusions_url') !== '' ) {
 
-            $exclusions = explode( ',', $modx->getOption('antispambycleantalk.exclusions_url') );
+            $exclusions = explode( ',', $this->modx->getOption('antispambycleantalk.exclusions_url') );
 
             $haystack = @$_SERVER['REQUEST_URI'];
             foreach ( $exclusions as $exclusion ) {
@@ -144,7 +146,6 @@ class classCleantalkAntispamCoreModx extends classCleantalkAntispamCore
     protected function get_sender_info( $post )
     {
 
-        global $modx;
 
         return $sender_info = array(
 
@@ -158,7 +159,7 @@ class classCleantalkAntispamCoreModx extends classCleantalkAntispamCore
             'fields_number'   => sizeof($post),
             'ct_options'      => json_encode(array(
                 'auth_key' => $this->get_api_key(),
-                'url_exclusions' => $modx->getOption('antispambycleantalk.exclusions_url')
+                'url_exclusions' => $this->modx->getOption('antispambycleantalk.exclusions_url')
             )),
 
             // JS params
@@ -171,5 +172,4 @@ class classCleantalkAntispamCoreModx extends classCleantalkAntispamCore
 
         );
     }
-
 }
