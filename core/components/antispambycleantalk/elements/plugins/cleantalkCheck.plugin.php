@@ -1,6 +1,6 @@
 <?php
 
-if( $modx->getOption('antispambycleantalk.plugin_enabled') && trim( $modx->getOption( 'antispambycleantalk.api_key' ) ) == '' ) {
+if ( ( $modx->getOption('antispambycleantalk.plugin_enabled') && trim( $modx->getOption( 'antispambycleantalk.api_key' ) ) == '' ) || $modx->context->key == 'mgr' ) {
 
     return;
 
