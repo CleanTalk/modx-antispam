@@ -38,3 +38,7 @@ You can now download CleanTalk Anti-Spam for MODX from the official catalog.
 
 
 The Company provides automatic spam protection services for popular CMS: Drupal, IP.Board, IPS Community Suite, Joomla, Magento, MediaWiki, ModX Revolution, MyBB, OpenCart, phpBB, Simple Machines Forum, Typo3, vBulletin, WooCommerce, WordPress, XenForo and API for PHP, Perl, Python, NET.
+
+## Requirements
+
+* CleanTalk account https://cleantalk.org/register?product=anti-spam
