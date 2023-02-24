@@ -216,6 +216,12 @@ abstract class classCleantalkAntispamCore
                     $value = urldecode( trim( $value ) ); // Fully cleaned message
                     $value_for_email = trim( $value );
 
+                    if (strpos($value_for_email, ' ') !== false) {
+                        preg_match("/^\S+/", $value_for_email, $left);
+                        preg_match("/@\S+$/", $value_for_email, $right);
+                        $value_for_email = $left[0] . $right[0];
+                    }
+
                     // Email
                     if ( ! $email && preg_match( "/^\S+@\S+\.\S+$/", $value_for_email ) ) {
                         $email = $value_for_email;
