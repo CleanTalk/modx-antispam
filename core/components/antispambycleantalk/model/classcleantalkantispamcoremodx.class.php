@@ -15,6 +15,12 @@ class classCleantalkAntispamCoreModx extends classCleantalkAntispamCore
         parent::__construct($config['api_key']);
         require_once MODX_CORE_PATH . 'components/antispambycleantalk/model/lib/autoloader.php';
         $this->modx->regClientScript(MODX_ASSETS_URL . 'components/antispambycleantalk/js/web/apbct_public.js');
+
+        if (!empty($_POST) && (
+            strpos($_SERVER['REQUEST_URI'], 'components/fetchit/action.php') !== false
+        )) {
+            $this->ccf_spam_test($_POST);
+        }
     }
 
     public function ccf_spam_test( $post )
