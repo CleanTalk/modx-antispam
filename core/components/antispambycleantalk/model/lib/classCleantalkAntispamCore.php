@@ -152,7 +152,16 @@ abstract class classCleantalkAntispamCore
             'ebd_settings',
             'ebd_downloads_',
             'ecole_origine',
+            'form_name',
         );
+
+        //special constructor form exclusions
+        if (
+            !empty($_POST['pcVar']) &&
+            !empty($_POST['token'])
+        ) {
+            $skip_fields_with_strings[] = 'ip\w_|panel\d_|pcVar|receptacle|ground_jacks|project|token|panel_type';
+        }
 
         // Reset $message if we have a sign-up data
         $skip_message_post = array(
