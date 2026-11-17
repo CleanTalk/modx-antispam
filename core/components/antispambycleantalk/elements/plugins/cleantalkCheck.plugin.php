@@ -5,7 +5,7 @@ if ( ( $modx->getOption('antispambycleantalk.plugin_enabled') && trim( (string) 
     return;
 
 } else {
-    
+
     $path = MODX_CORE_PATH . 'components/antispambycleantalk/model/';
     $modx->getService('cleantalk_antispam_core', 'classCleantalkAntispamCoreModx', $path, [
         'api_key' => trim( (string) $modx->getOption( 'antispambycleantalk.api_key' ) )
@@ -15,6 +15,20 @@ if ( ( $modx->getOption('antispambycleantalk.plugin_enabled') && trim( (string) 
 }
 
 switch ($modx->event->name) {
+
+    // FormIt hook - fires before email sending
+    case 'OnBeforeFormProcessor':
+        if (!empty($_POST)) {
+            $cleantalk_antispam_core->ccf_spam_test($_POST);
+        }
+        break;
+
+    // Fix for AJAX-form FormIt
+    case 'OnPageNotFound':
+        if (!empty($_POST) && strpos($_SERVER['REQUEST_URI'], 'formit') !== false) {
+            $cleantalk_antispam_core->ccf_spam_test($_POST);
+        }
+        break;
 
     case 'OnLoadWebDocument' :
 
