@@ -73,7 +73,7 @@ class Helper{
 	static public function ip__get($ip_types = array('real', 'remote_addr', 'x_forwarded_for', 'x_real_ip', 'cloud_flare'), $v4_only = true)
 	{
 		$ips = array_flip($ip_types); // Result array with IPs
-		$headers = apache_request_headers();
+		$headers = self::http__get_headers();
 		
 		// REMOTE_ADDR
 		if(isset($ips['remote_addr'])){
@@ -535,7 +535,10 @@ class Helper{
 					$curl_info = curl_getinfo($ch);
 					$result = $curl_info['http_code'];
 				}
-				curl_close($ch);
+				// curl_close() has no effect since PHP 8.0 and is deprecated since PHP 8.5
+				if (PHP_VERSION_ID < 80000) {
+					curl_close($ch);
+				}
 				$out = $result;
 			}else
 				$out = array('error' => curl_error($ch));
@@ -622,7 +625,7 @@ class Helper{
 			unset($key, $val);
 			
 			//String
-		}else{
+		}elseif(is_string($data)){
 			if(!preg_match('//u', $data))
 				$data = 'Nulled. Not UTF8 encoded or malformed.';
 		}
@@ -647,7 +650,7 @@ class Helper{
 			unset($key, $val);
 			
 			//String
-		}else{
+		}elseif(is_string($obj)){
 			if(!preg_match('//u', $obj) && function_exists('mb_detect_encoding') && function_exists('mb_convert_encoding')){
 				$encoding = mb_detect_encoding($obj);
 				$encoding = $encoding ? $encoding : $data_codepage;
@@ -703,7 +706,34 @@ class Helper{
 	 * @return bool
 	 */
 	static public function is_regexp($regexp){
-		return @preg_match('/' . $regexp . '/', null) !== false;
+		return @preg_match('/' . $regexp . '/', '') !== false;
+	}
+	
+	/**
+	 * Gets HTTP request headers on any SAPI.
+	 * apache_request_headers() is missing in CLI and in PHP-FPM before PHP 7.3.
+	 *
+	 * @return array
+	 */
+	static public function http__get_headers()
+	{
+		if(function_exists('apache_request_headers')){
+			$headers = apache_request_headers();
+			if(is_array($headers)){
+				return $headers;
+			}
+		}
+		
+		$headers = array();
+		foreach($_SERVER as $key => $val){
+			if(strpos($key, 'HTTP_') !== 0){
+				continue;
+			}
+			$name = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($key, 5)))));
+			$headers[$name] = $val;
+		}
+		
+		return $headers;
 	}
 	
 	static public function convert_to_regexp( $string ){

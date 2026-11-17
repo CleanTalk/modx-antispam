@@ -1,6 +1,6 @@
 <?php
 
-if ( ( $modx->getOption('antispambycleantalk.plugin_enabled') && trim( $modx->getOption( 'antispambycleantalk.api_key' ) ) == '' ) || $modx->context->key == 'mgr' ) {
+if ( ( $modx->getOption('antispambycleantalk.plugin_enabled') && trim( (string) $modx->getOption( 'antispambycleantalk.api_key' ) ) == '' ) || $modx->context->key == 'mgr' ) {
 
     return;
 
@@ -8,7 +8,7 @@ if ( ( $modx->getOption('antispambycleantalk.plugin_enabled') && trim( $modx->ge
     
     $path = MODX_CORE_PATH . 'components/antispambycleantalk/model/';
     $modx->getService('cleantalk_antispam_core', 'classCleantalkAntispamCoreModx', $path, [
-        'api_key' => trim( $modx->getOption( 'antispambycleantalk.api_key' ) )
+        'api_key' => trim( (string) $modx->getOption( 'antispambycleantalk.api_key' ) )
     ]);    
     $cleantalk_antispam_core = $modx->cleantalk_antispam_core;
 
