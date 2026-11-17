@@ -1,7 +1,7 @@
 ----------------------
 Antispam by CleanTalk
 ----------------------
-Version: 1.3
+Version: 1.5.0
 Author: Cleantalk.inc
 Contact: welcome@cleantalk.org
 ----------------------
@@ -12,7 +12,7 @@ CleanTalk completed the development extension for the MODX, to protect your onli
 
 
 
-The anti-spam extension is compatible with MODX versions v1.x. and approved on the MODX official marketplace.
+The anti-spam extension is compatible with MODX 3.x and 2.x and approved on the MODX official marketplace.
 
 
 

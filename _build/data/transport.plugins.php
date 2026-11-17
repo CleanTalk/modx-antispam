@@ -23,6 +23,20 @@ $events['OnMODXInit']->fromArray(array(
     'priority' => 0,
     'propertyset' => 0,
 ),'',true,true);
+// Event to handle FormIt submissions
+$events['OnBeforeFormProcessor']= $modx->newObject('modPluginEvent');
+$events['OnBeforeFormProcessor']->fromArray(array(
+    'event' => 'OnBeforeFormProcessor',
+    'priority' => 0,
+    'propertyset' => 0,
+),'',true,true);
+// Event to handle AJAX FormIt requests
+$events['OnPageNotFound']= $modx->newObject('modPluginEvent');
+$events['OnPageNotFound']->fromArray(array(
+    'event' => 'OnPageNotFound',
+    'priority' => 0,
+    'propertyset' => 0,
+),'',true,true);
 if (is_array($events) && !empty($events)) {
 	$plugins[0]->addMany($events);
 	$modx->log(xPDO::LOG_LEVEL_INFO,'Packaged in '.count($events).' Plugin Events for Cleantalk.'); flush();

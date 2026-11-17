@@ -25,7 +25,7 @@ switch ($modx->event->name) {
 
     // Fix for AJAX-form FormIt
     case 'OnPageNotFound':
-        if (!empty($_POST) && strpos($_SERVER['REQUEST_URI'], 'formit') !== false) {
+        if (!empty($_POST) && isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'formit') !== false) {
             $cleantalk_antispam_core->ccf_spam_test($_POST);
         }
         break;
