@@ -6,6 +6,7 @@ Version 1.5.0 November 17, 2026
 - Fix. Custom constructor form exlusion fields added.
 - Fix. Integration. FormIt integration protection fixed.
 - Upd. Code. Compatibility with php versions
+- Upd. Code. Translation support, Readme edits, Agent edits, PHP compatibility edits and hook registration
 
 Version 1.4 September 16, 2022
 ------------------------------
