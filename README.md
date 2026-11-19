@@ -1,40 +1,48 @@
-modx-antispam
-================
-[![Build Status](https://travis-ci.org/CleanTalk/modx-antispam.svg)](https://travis-ci.org/CleanTalk/modx-antispam)
+# Antispam by CleanTalk for MODX
 
-Version 1.4
-================
+Spam protection for MODX forms without CAPTCHA, reCAPTCHA or puzzles.
+Checks contact, FormIt, sign-up and AJAX forms in the cloud and blocks spam bots. Used on 1,100,000+ websites.
 
-CleanTalk Released a plugin for the Protection of MODX Against Spam and Spam Bots
+> **Free months for your review.** Post a review about CleanTalk on a community platform (for example, community.modx.com), then send us the link from your [CleanTalk dashboard > Bonuses](https://cleantalk.org/my/bonuses). We add free months to your annual license.
 
-CleanTalk completed the development extension for the MODX, to protect your online store against spam and spambots.
+![Settings](assets/modx-1-settings.png)
 
+## What it protects
+- Any front-end form that sends POST data, including FormIt
+- AJAX forms
+- Optional: forms without an email field
 
+## Requirements
+- MODX 3.x or 2.x (tested on MODX 3.2.4, PHP 8.2)
+- PHP 5.6 – 8.5 (any version supported by your MODX release)
+- CleanTalk access key: [cleantalk.org/register](https://cleantalk.org/register?platform=modx&utm_source=modx&utm_medium=github), 7-day free trial, no card
 
-The anti-spam extension is compatible with MODX versions v1.x. and approved on the MODX official marketplace.
+## Install
+1. Extras > Installer > Download Extras, search "CleanTalk", install
+2. System Settings > namespace `antispambycleantalk` > `api_key`: paste your access key
 
+| Setting | What it does |
+|---|---|
+| `antispambycleantalk.api_key` | Your access key |
+| `antispambycleantalk.plugin_enabled` | Turns protection on or off |
+| `antispambycleantalk.exclusions_url` | Pages to skip, comma separated |
+| `antispambycleantalk.check_forms_without_email` | Also check forms with no email field |
 
+![Spam blocked](assets/modx-2-form-blocked.png)
 
-This extension allows users to quickly and easily connect to CleanTalk anti-spam service. Its service provides 100% protection from spam bots and provides a simple and convenient commentary/sign-up form for visitors.
+## Free Anti-Spam & Security Licenses for Developers
 
-This extension allows protection from automatically distributed spam, as well as from spam bots registrations. The protection method offered by CleanTalk allows users to switch from the methods that trouble the communication (CAPTCHA, question-answer etc.) to a more convenient one.
+We offer free Anti-Spam and Security licenses to developers who contribute to the development and maintenance of our plugins.
 
+**How to qualify for free licenses:**
+- Have at least one contribution to our plugins approved.
+- Manage plugin, module, or extension releases and maintain their listings on relevant community platforms.
 
+Interested? Contact us at [welcome@cleantalk.org](mailto:welcome@cleantalk.org) to claim your free licenses.
 
-CleanTalk saves time and resources spent on moderation and verification of questionable users or comments. Unnoticeable Protection from spam and registration forms, which does not require the visitor to prove who they are, increases the conversion in registration and is not annoying.
+## Links
+- [MODX Extras page](https://extras.modx.com/package/antispambycleantalk)
+- [CleanTalk dashboard](https://cleantalk.org/my)
+- [Support](https://cleantalk.org/my/support)
 
-
-
-CleanTalk is a cloud service, security module, installed on a website, which sends the behavior parameters of the visitor or spambot. These parameters are estimated, and the service makes a decision – to post a message or to define it as spam and reject.
-
-
-
-On the basis of such checks, the service forms its own list of email addresses used by spambots. Likewise, the registration of visitors is checked. The service adds not only email addresses to the blacklist but also IP addresses and domains of the websites that are promoted through spam mailout. The CleanTalk company developed unique algorithms to assess the behavior of the visitor, and with 100% accuracy, we keep spam messages at bay. All of this happens automatically and requires no action from the administration of the website.
-
-
-
-You can now download CleanTalk Anti-Spam for MODX from the official catalog.
-
-
-
-The Company provides automatic spam protection services for popular CMS: Drupal, IP.Board, IPS Community Suite, Joomla, Magento, MediaWiki, ModX Revolution, MyBB, OpenCart, phpBB, Simple Machines Forum, Typo3, vBulletin, WooCommerce, WordPress, XenForo and API for PHP, Perl, Python, NET.
+If this extra helps you, please star ⭐ the repository.

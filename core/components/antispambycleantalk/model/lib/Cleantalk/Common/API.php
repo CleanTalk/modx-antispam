@@ -656,7 +656,10 @@ class API{
 			// Make a request
 			$result = curl_exec($ch);
 			$errors = curl_error($ch);
-			curl_close($ch);
+			// curl_close() has no effect since PHP 8.0 and is deprecated since PHP 8.5
+			if (PHP_VERSION_ID < 80000) {
+				curl_close($ch);
+			}
 			
 			// Retry with SSL enabled if failed
 			if($result === false){

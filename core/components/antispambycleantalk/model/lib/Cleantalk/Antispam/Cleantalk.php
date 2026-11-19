@@ -173,7 +173,7 @@ class Cleantalk {
 		// Wiping cleantalk's headers but, not for send_feedback
 		if($request->method_name != 'send_feedback'){
 			
-			$ct_tmp = apache_request_headers();
+			$ct_tmp = Helper::http__get_headers();
 			
 			if(isset($ct_tmp['Cookie']))
 				$cookie_name = 'Cookie';
@@ -197,7 +197,7 @@ class Cleantalk {
 				'/\s?apbct_page_hits=\d*?[^;]*;?/',
 				'/\s?apbct_visible_fields_count=\d*?[^;]*;?/',
 				'/\s?apbct_visible_fields=%7B.*%7D[^;]*;?/',
-			), '', $ct_tmp[$cookie_name]);
+			), '', isset($ct_tmp[$cookie_name]) ? $ct_tmp[$cookie_name] : '');
 			$request->all_headers = json_encode($ct_tmp);
 		}
 		
@@ -211,7 +211,7 @@ class Cleantalk {
      */
 	private function compressData($data = null){
 		
-		if (strlen($data) > $this->dataMaxSise && function_exists('gzencode') && function_exists('base64_encode')){
+		if (is_string($data) && strlen($data) > $this->dataMaxSise && function_exists('gzencode') && function_exists('base64_encode')){
 
 			$localData = gzencode($data, $this->compressRate, FORCE_GZIP);
 
@@ -254,7 +254,7 @@ class Cleantalk {
 			$servers = $this->get_servers_ip($url_host);
 
 			// Loop until find work server
-			foreach ($servers as $server) {
+			foreach ((array)$servers as $server) {
 				
 				$dns = Helper::ip__resolve__cleantalks($server['ip']);
 				if(!$dns)
@@ -346,7 +346,7 @@ class Cleantalk {
                     $ping = $ping * 1000;
                 }
                 
-				$tmp[$ping] = $server;
+				$tmp[(int)$ping] = $server;
                 
 				$fast_server_found = $ping < $this->min_server_timeout ? true : false;
 
@@ -394,8 +394,12 @@ class Cleantalk {
      * @param $msg
      * @return boolean|\CleantalkResponse
      */
-    private function sendRequest($data = null, $url, $server_timeout = 3)
+    private function sendRequest($data, $url, $server_timeout = 3)
 	{
+		// Since PHP 7 func_get_args() returns modified values, so keep the originals for the SSL retry
+		$original_data = $data;
+		$original_url  = $url;
+		
         // Convert to array
         $data = (array)json_decode(json_encode($data), true);
 		
@@ -449,12 +453,14 @@ class Cleantalk {
 				// Use SSL next time, if error occurs.
 				if(!$this->ssl_on){
 					$this->ssl_on = true;
-					$args = func_get_args();
-					return $this->sendRequest($args[0], $args[1], $server_timeout);
+					return $this->sendRequest($original_data, $original_url, $server_timeout);
 				}
 			}
 
-			curl_close($ch);
+			// curl_close() has no effect since PHP 8.0 and is deprecated since PHP 8.5
+			if (PHP_VERSION_ID < 80000) {
+				curl_close($ch);
+			}
 		}
 
         if (!$result) {

@@ -1,9 +1,15 @@
 /.idea
-/assets/
 /assets/*
+!/assets/components/
+/assets/components/*
+!/assets/components/antispambycleantalk/
+!/assets/modx-1-settings.png
+!/assets/modx-2-form-blocked.png
 /connectors/
-/core/
 /core/*
+!/core/components/
+/core/components/*
+!/core/components/antispambycleantalk/
 /manager/
 !.gitignore
 !/_build/*

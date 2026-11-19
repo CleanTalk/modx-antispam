@@ -23,11 +23,21 @@ if (!defined('MOREPROVIDER_BUILD')) {
     /* define version */
     define('PKG_NAME','antispambycleantalk');
     define('PKG_NAME_LOWER',strtolower(PKG_NAME));
-    define('PKG_VERSION','1.4');
-    define('PKG_RELEASE','stable');
+    define('PKG_VERSION','1.5.0');
+    define('PKG_RELEASE','pl');
 
     /* load modx */
-    require_once dirname(dirname(__FILE__)) . '/config.core.php';
+    if (!defined('MODX_CORE_PATH')) {
+        require_once dirname(dirname(__FILE__)) . '/config.core.php';
+    }
+    // The package is built on MODX 2.8.x only; the resulting archive installs on both MODX 2.8.x and 3.x.
+    if (!is_file(MODX_CORE_PATH . 'model/modx/modx.class.php')) {
+        throw new RuntimeException(
+            'MODX 2.8.x core not found in ' . MODX_CORE_PATH . '. '
+            . (is_file(MODX_CORE_PATH . 'src/Revolution/modX.php') ? 'This is a MODX 3 core. ' : '')
+            . 'Build the package with a MODX 2.8.x installation.'
+        );
+    }
     require_once MODX_CORE_PATH . 'model/modx/modx.class.php';
     $modx= new modX();
     $modx->initialize('mgr');
@@ -168,7 +178,9 @@ $builder->setPackageAttributes(array(
 $modx->log(modX::LOG_LEVEL_INFO,'Packaged in package attributes.'); flush();
 
 $modx->log(modX::LOG_LEVEL_INFO,'Packing...'); flush();
-$builder->pack();
+if (!$builder->pack()) {
+    throw new RuntimeException('Failed to build the transport package.');
+}
 
 $mtime = microtime();
 $mtime = explode(" ", $mtime);

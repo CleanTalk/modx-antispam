@@ -56,7 +56,7 @@ class classCleantalkAntispamCoreModx extends classCleantalkAntispamCore
 
             // Service pararams
             $ct_request->auth_key             = $this->get_api_key();
-            $ct_request->agent                = 'modx-14';
+            $ct_request->agent                = 'modx-15';
 
             // Message params
             $ct_request->sender_email         = $sender_email;
@@ -75,7 +75,7 @@ class classCleantalkAntispamCoreModx extends classCleantalkAntispamCore
 
             // Misc params
             $ct_request->js_on                = isset($post['ct_checkjs']) && $post['ct_checkjs'] == date("Y") ? 1 : 0;
-            $ct_request->submit_time          = ($this->cookies_test() == 1) ? time() - (int)$_COOKIE['apbct_timestamp'] : null;
+            $ct_request->submit_time          = ($this->cookies_test() == 1 && isset($_COOKIE['apbct_timestamp'])) ? time() - (int)$_COOKIE['apbct_timestamp'] : null;
             $ct_request->sender_info          = json_encode( $this->get_sender_info( $post ) );
             $ct_request->all_headers          = json_encode( $this->get_sender_info( $post ) );
 
@@ -133,21 +133,22 @@ class classCleantalkAntispamCoreModx extends classCleantalkAntispamCore
 
     protected function url_exclusions_check() {
 
+        $exclusions = trim( (string) $this->modx->getOption('antispambycleantalk.exclusions_url') );
 
-        if ( $this->modx->getOption('antispambycleantalk.exclusions_url') !== '' ) {
-
-            $exclusions = explode( ',', $this->modx->getOption('antispambycleantalk.exclusions_url') );
-
-            $haystack = @$_SERVER['REQUEST_URI'];
-            foreach ( $exclusions as $exclusion ) {
-                if ( stripos( $haystack, $exclusion ) !== false ){
-                    return true;
-                }
-            }
-            return false;
-        } else {
+        if ( $exclusions === '' ) {
             return false;
         }
+
+        $haystack = isset( $_SERVER['REQUEST_URI'] ) ? (string) $_SERVER['REQUEST_URI'] : '';
+        foreach ( explode( ',', $exclusions ) as $exclusion ) {
+            $exclusion = trim( $exclusion );
+            // Since PHP 8.0 stripos() with an empty needle returns 0, which would exclude every URL
+            if ( $exclusion !== '' && stripos( $haystack, $exclusion ) !== false ){
+                return true;
+            }
+        }
+
+        return false;
 
     }
 
@@ -162,10 +163,10 @@ class classCleantalkAntispamCoreModx extends classCleantalkAntispamCore
         return $sender_info = array(
 
             // Common
-            'remote_addr'     => $_SERVER['REMOTE_ADDR'],
-            'USER_AGENT'      => htmlspecialchars($_SERVER['HTTP_USER_AGENT']),
-            'REFFERRER'       => htmlspecialchars($_SERVER['HTTP_REFERER']),
-            'page_url'        => isset($_SERVER['SERVER_NAME'], $_SERVER['REQUEST_URI']) ? htmlspecialchars($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']) : null,
+            'remote_addr'     => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null,
+            'USER_AGENT'      => isset($_SERVER['HTTP_USER_AGENT']) ? htmlspecialchars($_SERVER['HTTP_USER_AGENT'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') : null,
+            'REFFERRER'       => isset($_SERVER['HTTP_REFERER']) ? htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') : null,
+            'page_url'        => isset($_SERVER['SERVER_NAME'], $_SERVER['REQUEST_URI']) ? htmlspecialchars($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') : null,
             'php_session'     => session_id() != '' ? 1 : 0,
             'cookies_enabled' => $this->cookies_test(),
             'fields_number'   => sizeof($post),
