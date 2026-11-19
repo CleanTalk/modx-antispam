@@ -119,6 +119,7 @@ class CleantalkRequest {
     public $submit_time = null;
     
     public $x_forwarded_for = '';
+    public $x_forwarded_for_last = null;
     public $x_real_ip = '';
 
     /**

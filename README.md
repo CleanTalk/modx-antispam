@@ -5,7 +5,7 @@ Checks contact, FormIt, sign-up and AJAX forms in the cloud and blocks spam bots
 
 > **Free months for your review.** Post a review about CleanTalk on a community platform (for example, community.modx.com), then send us the link from your [CleanTalk dashboard > Bonuses](https://cleantalk.org/my/bonuses). We add free months to your annual license.
 
-![Settings](docs/modx-settings.png)
+![Settings](assets/modx-1-settings.png)
 
 ## What it protects
 - Any front-end form that sends POST data, including FormIt
@@ -14,6 +14,7 @@ Checks contact, FormIt, sign-up and AJAX forms in the cloud and blocks spam bots
 
 ## Requirements
 - MODX 3.x or 2.x (tested on MODX 3.2.4, PHP 8.2)
+- PHP 5.6 – 8.5 (any version supported by your MODX release)
 - CleanTalk access key: [cleantalk.org/register](https://cleantalk.org/register?platform=modx&utm_source=modx&utm_medium=github), 7-day free trial, no card
 
 ## Install
@@ -27,7 +28,7 @@ Checks contact, FormIt, sign-up and AJAX forms in the cloud and blocks spam bots
 | `antispambycleantalk.exclusions_url` | Pages to skip, comma separated |
 | `antispambycleantalk.check_forms_without_email` | Also check forms with no email field |
 
-![Spam blocked](docs/modx-spam-blocked.png)
+![Spam blocked](assets/modx-2-form-blocked.png)
 
 ## Free Anti-Spam & Security Licenses for Developers
 

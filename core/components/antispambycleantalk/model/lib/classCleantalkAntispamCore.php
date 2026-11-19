@@ -55,6 +55,10 @@ abstract class classCleantalkAntispamCore
 
             $cookie_test = json_decode(stripslashes($_COOKIE['apbct_cookies_test']), true);
 
+            if( ! is_array($cookie_test) || ! isset($cookie_test['cookies_names'], $cookie_test['check_value']) || ! is_array($cookie_test['cookies_names']) ) {
+                return 0;
+            }
+
             $check_srting = $this->get_api_key();
             foreach( $cookie_test['cookies_names'] as $cookie_name ) {
                 $check_srting .= isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : '';
@@ -152,7 +156,16 @@ abstract class classCleantalkAntispamCore
             'ebd_settings',
             'ebd_downloads_',
             'ecole_origine',
+            'form_name',
         );
+
+        //special constructor form exclusions
+        if (
+            !empty($_POST['pcVar']) &&
+            !empty($_POST['token'])
+        ) {
+            $skip_fields_with_strings[] = 'ip\w_|panel\d_|pcVar|receptacle|ground_jacks|project|token|panel_type';
+        }
 
         // Reset $message if we have a sign-up data
         $skip_message_post = array(
@@ -184,7 +197,7 @@ abstract class classCleantalkAntispamCore
                         $value = explode('~', $value);
                         foreach ($value as &$val){
                             $tmp = explode(' %% ', $val);
-                            $val = array($tmp[0] => $tmp[1]);
+                            $val = array($tmp[0] => isset($tmp[1]) ? $tmp[1] : '');
                         }
                     }
                 }
@@ -219,7 +232,7 @@ abstract class classCleantalkAntispamCore
                     if (strpos($value_for_email, ' ') !== false) {
                         preg_match("/^\S+/", $value_for_email, $left);
                         preg_match("/@\S+$/", $value_for_email, $right);
-                        $value_for_email = $left[0] . $right[0];
+                        $value_for_email = (isset($left[0]) ? $left[0] : '') . (isset($right[0]) ? $right[0] : '');
                     }
 
                     // Email
@@ -278,8 +291,8 @@ abstract class classCleantalkAntispamCore
 
         //If top iteration, returns compiled name field. Example: "Nickname Firtsname Lastname".
         if($prev_name === ''){
+            $nickname_str = '';
             if(!empty($nickname)){
-                $nickname_str = '';
                 foreach($nickname as $value){
                     $nickname_str .= ($value ? $value." " : "");
                 }unset($value);
