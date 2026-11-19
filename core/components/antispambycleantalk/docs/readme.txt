@@ -13,7 +13,7 @@ CleanTalk completed the development extension for the MODX, to protect your onli
 
 
 The anti-spam extension is compatible with MODX 3.x and 2.x and approved on the MODX official marketplace.
-
+The anti-spam extension supports PHP versions 5.6 – 8.5.
 
 
 This extension allows users to quickly and easily connect to CleanTalk anti-spam service. Its service provides 100% protection from spam bots and provides a simple and convenient commentary/sign-up form for visitors.

@@ -14,6 +14,7 @@ Checks contact, FormIt, sign-up and AJAX forms in the cloud and blocks spam bots
 
 ## Requirements
 - MODX 3.x or 2.x (tested on MODX 3.2.4, PHP 8.2)
+- PHP 5.6 – 8.5 (any version supported by your MODX release)
 - CleanTalk access key: [cleantalk.org/register](https://cleantalk.org/register?platform=modx&utm_source=modx&utm_medium=github), 7-day free trial, no card
 
 ## Install
